@@ -53,15 +53,6 @@ const AuthPage = () => {
         }
     }
 
-    const getDataFromServer2 = async () => {
-        try {
-            const data = await request('/api/auth/test', 'GET')
-            message(data.message)
-        } catch(e) {
-            throw Error('Что-то не так 2')
-        }
-    }
-
     return (
         <div className="row">
             <div className="col s6 offset-s3">
@@ -116,13 +107,6 @@ const AuthPage = () => {
                             disabled={loading}
                         >
                             Получить данные
-                        </button>
-                        <button 
-                            className="btn grey lighten-1 black-text"
-                            onClick={getDataFromServer2}
-                            disabled={loading}
-                        >
-                            Получить данные 2
                         </button>
                     </div>
 
