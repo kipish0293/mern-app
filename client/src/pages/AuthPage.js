@@ -46,7 +46,7 @@ const AuthPage = () => {
 
     const getDataFromServer = async () => {
         try {
-            const data = await request('/api/link/get-data', 'GET')
+            const data = await request('/api/auth/get-data', 'GET')
             message(data.message)
         } catch(e) {
             
