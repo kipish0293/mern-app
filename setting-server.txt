@@ -1,0 +1,13 @@
+установка nodejs npm На ubuntu 18 Nodejs 12 https://computingforgeeks.com/how-to-install-nodejs-on-ubuntu-debian-linux-mint/
+
+подключение к серверу через putty, нужно указать приватный ключ и подключится по ip сервера ssh root@80.249.151.52 пароль root 
+
+сам сервер находится на https://vds.selectel.ru/panel/scalets/ логин 80194 пароль 12PahaN12
+
+доменное имя на https://www.nic.ru/manager/my_domains.cgi?step=srv.my_domains договор 4049642/NIC-D
+
+база на https://cloud.mongodb.com/v2/61e90ea3157d4e4e71f899c6#security/network/accessList osoko007@gmail.com 12PahaN12
+
+гит репозиторий https://github.com/kipish0293/mern-app
+
+видео Владилена на ютуб https://www.youtube.com/watch?v=ivDjWYcKDZI&t=6362s

@@ -126,10 +126,10 @@ router.get(
 
         // await user.save()
         // const resp = await axios('https://jsonplaceholder.typicode.com/todos/1')
-        const email = "osoko007@gmail.com"
-        const candidate = await User.findOne({ email })
+        // const email = "osoko007@gmail.com"
+        // const candidate = await User.findOne({ email })
     
-        res.status(200).json({message : "Данные получены", candidate : candidate})
+        res.json({message : "Данные получены", candidate : {test : 'test'}})
     } catch (e) {
         res.status(500).json({message : "Что-то пошло не так, попробуйте снова"})
     }
