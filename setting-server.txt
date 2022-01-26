@@ -1,4 +1,5 @@
 установка nodejs npm На ubuntu 18 Nodejs 12 https://computingforgeeks.com/how-to-install-nodejs-on-ubuntu-debian-linux-mint/
+установка pm2 чтобы поддерживал работу при отклюении от putty, запуск командой pm2 start npm -- start
 
 подключение к серверу через putty, нужно указать приватный ключ и подключится по ip сервера ssh root@80.249.151.52 пароль root 
 
