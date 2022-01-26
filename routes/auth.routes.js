@@ -135,4 +135,52 @@ router.get(
     }
 })
 
+
+router.get(
+    '/test', 
+    // [
+    //     check('email', 'Некорректный email').isEmail(),
+    //     check('password', 'Минимальная длина пароля 6 символов').isLength({min : 6})
+    // ],
+    async (req, res) => {
+    try {
+        // const errors = validationResult(req)
+
+        // if(!errors.isEmpty()) {
+        //     return res.status(400).json({
+        //         errors : errors.array(),
+        //         message : 'Некорректные данные при регистрации'
+        //     })
+        // }
+        // if(!errors.isEmpty()) {
+        //     console.log(errors)
+        // }
+
+        // const {email, password} = req.body
+
+        // const candidate = await User.findOne({ email })
+
+        // if(candidate) {
+        //     return res.status(400).json({message : "Такой пользователь уже существует"})
+        // }
+
+        // const hashedPassword = await bcrypt.hash(password, 12)
+
+        // const user = new User({email, password : hashedPassword})
+
+        // await user.save()
+        // const resp = await axios('https://jsonplaceholder.typicode.com/todos/1')
+        // const email = "osoko007@gmail.com"
+        // const candidate = await User.findOne({ email })
+        const obj = {
+            message : "Данные получены", 
+            candidate : {test : 'test'}
+        }
+        res.json(obj)
+    } catch (e) {
+        res.status(500).json({message : "Что-то пошло не так, попробуйте снова"})
+    }
+})
+
+
 module.exports = router
