@@ -5,6 +5,7 @@ import { AuthContext } from "../context/auth.context";
 
 const AuthPage = () => {
     const auth = useContext(AuthContext) 
+
     const message = useMessage()
     const {loading, error, request, clearError} = useHttp()
 
@@ -12,15 +13,6 @@ const AuthPage = () => {
         email : "",
         password : ""
     })
-
-    useEffect(()=> {
-        message(error)
-        clearError()
-    },[error, message, clearError])
-
-    useEffect(()=> {
-        window.M.updateTextFields()
-    }, [])
 
     const changeHandler = event => {
         setForm({...form, [event.target.name]: event.target.value})
@@ -38,81 +30,92 @@ const AuthPage = () => {
     const loginHandler = async () => {
         try {
             const data = await request('/api/auth/login', 'POST', {...form})
-            auth.login(data.token, data.userId)
+            // console.log(data)
+            auth.login(data.token, data.userId, data.userName)
         } catch (e) {
 
         }
     }
 
-    const getDataFromServer = async () => {
-        try {
-            const data = await request('/api/auth/get-data', 'GET')
-            message(data.message)
-        } catch(e) {
+    // const getDataFromServer = async () => {
+    //     try {
+    //         const data = await request('/api/auth/get-data', 'GET')
+    //         message(data.message)
+    //     } catch(e) {
             
-        }
-    }
+    //     }
+    // }
+
+    useEffect(()=> {
+        message(error)
+        clearError()
+    },[error, message, clearError])
+
+    useEffect(()=> {
+        window.M.updateTextFields()
+    }, [])
 
     return (
-        <div className="row">
-            <div className="col s6 offset-s3">
-                <h1>Сократи ссылку</h1>
-                <div className="card blue darken-1">
-                    <div className="card-content white-text">
-                        <span className="card-title">Авторизация</span>
-                        <div>
-                            <div className="input-field">
-                                <input 
-                                    type="text" 
-                                    id="email" 
-                                    placeholder="email"
-                                    name="email"
-                                    value={form.email}
-                                    onChange={changeHandler}
-                                />
-                            </div>
-                            <div className="input-field">
-                                <input 
-                                    type="password" 
-                                    id="passord" 
-                                    placeholder="Введите пароль"
-                                    name="password"
-                                    value={form.password}
-                                    onChange={changeHandler}
-                                />
+        <>
+            <div className="row">
+                <div className="col s6 offset-s3">
+                    <h1>Сократи ссылку</h1>
+                    <div className="card blue darken-1">
+                        <div className="card-content white-text">
+                            <span className="card-title">Авторизация</span>
+                            <div>
+                                <div className="input-field">
+                                    <input 
+                                        type="text" 
+                                        id="email" 
+                                        placeholder="email"
+                                        name="email"
+                                        value={form.email}
+                                        onChange={changeHandler}
+                                    />
+                                </div>
+                                <div className="input-field">
+                                    <input 
+                                        type="password" 
+                                        id="passord" 
+                                        placeholder="Введите пароль"
+                                        name="password"
+                                        value={form.password}
+                                        onChange={changeHandler}
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="card-action">
-                        <button 
-                            className="btn yellow darken-4" 
-                            style={{marginRight : "10px"}}
-                            onClick={loginHandler}
-                            disabled={loading}
-                        >
-                            Войти
-                        </button>
-                        <button 
-                            className="btn grey lighten-1 black-text"
-                            style={{marginRight : 10}}
-                            onClick={registerHandler}
-                            disabled={loading}
-                        >
-                            Регистрация
-                        </button>
+                        <div className="card-action">
+                            <button 
+                                className="btn yellow darken-4" 
+                                style={{marginRight : "10px"}}
+                                onClick={loginHandler}
+                                disabled={loading}
+                            >
+                                Войти
+                            </button>
+                            <button 
+                                className="btn grey lighten-1 black-text"
+                                style={{marginRight : 10}}
+                                onClick={registerHandler}
+                                disabled={loading}
+                            >
+                                Регистрация
+                            </button>
 
-                        <button 
-                            className="btn grey lighten-1 black-text"
-                            onClick={getDataFromServer}
-                            disabled={loading}
-                        >
-                            Получить данные
-                        </button>
+                            {/* <button 
+                                className="btn grey lighten-1 black-text"
+                                onClick={getDataFromServer}
+                                disabled={loading}
+                            >
+                                Получить данные
+                            </button> */}
+                        </div>
                     </div>
-
-                </div>
-            </div>   
-        </div>
+                </div> 
+            </div>
+        </>
     )
 }
 

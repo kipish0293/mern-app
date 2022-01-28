@@ -1,9 +1,10 @@
-const {Router, request} = require('express')
+const {Router, request, response} = require('express')
 const bcrypt = require('bcrypt');
 const config = require('config')
 const jwt = require('jsonwebtoken')
 const {check, validationResult} = require('express-validator')
 const User = require('../models/User');
+const Message = require('../models/Message');
 const router = Router()
 
 // /api/auth/register
@@ -83,7 +84,7 @@ router.post(
             {expiresIn: "1h"}
         )
 
-        res.json({ token, userId : user.id })
+        res.json({ token, userId : user.id, userName : user.email })
     
     } catch (e) {
         res.status(500).json({message : "Что-то пошло не так, попробуйте снова"})
@@ -134,6 +135,48 @@ router.get(
         res.status(500).json({message : "Что-то пошло не так, попробуйте снова"})
     }
 })
+
+router.get(
+    '/messager', 
+    async (req, res) => {
+    try {
+        const errors = validationResult(req)
+
+        // if(!errors.isEmpty()) {
+        //     return res.status(400).json({
+        //         errors : errors.array(),
+        //         message : 'Некорректные данные при регистрации'
+        //     })
+        // }
+        if(!errors.isEmpty()) {
+            console.log(errors)
+        }
+
+        // const {email, password} = req.body
+
+        // const candidate = await User.findOne({ email })
+
+        // if(candidate) {
+        //     return res.status(400).json({message : "Такой пользователь уже существует"})
+        // }
+
+        // const hashedPassword = await bcrypt.hash(password, 12)
+
+        // const user = new User({email, password : hashedPassword})
+
+        // await user.save()
+        // const resp = await axios('https://jsonplaceholder.typicode.com/todos/1')
+        // const email = "osoko007@gmail.com"
+        // const candidate = await User.findOne({ email })
+        const messages = await Message.find()
+    
+        res.status(200).json({message : "Данные получены", messages : messages})
+
+    } catch (e) {
+        res.status(500).json({message : "Что-то пошло не так, попробуйте снова"})
+    }
+})
+
 
 
 
