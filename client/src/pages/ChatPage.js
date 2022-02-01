@@ -5,8 +5,8 @@ import { AuthContext } from "../context/auth.context";
 import io from 'socket.io-client'
 import { TextField } from '@material-ui/core'
 
-let socket = io.connect('http://80.249.151.52')
-// let socket = io.connect('http://localhost:5000')
+// let socket = io.connect('http://our-family-gallery.ru')
+let socket = io.connect('http://localhost:5000')
 
 const ChatPage = () => {
     const auth = useContext(AuthContext)
@@ -17,6 +17,7 @@ const ChatPage = () => {
 
     const [mess, setMess] = useState({message : '', name : userName })
     const [chat, setChat] = useState([])
+    const [sistemMes, setSistemMes] = useState({message : '', name : "system-bot"})
 
     const renderChat = () => {
         return chat.map(({name, message, date}, index)=> (
@@ -38,11 +39,25 @@ const ChatPage = () => {
         setMess({message : "", name : userName})
     }
 
+
+    useEffect(()=> {
+        if(userName) {
+            socket.emit('userJoined', {userName})
+        }
+    }, [])
+
     useEffect(()=> {
         socket.on('message', ({name, message, dateToIo}) => {
             setChat([{name, message, date : dateToIo}, ...chat])
         })
     })
+
+    useEffect(()=> {
+        socket.on('userJoinToChat', ({name, message, date}) => {
+            setChat([{name, message, date : date}, ...chat])
+        })
+    })
+
 
     useEffect(async ()=> {
         const data = await request('/api/auth/messager', 'GET')
@@ -55,6 +70,10 @@ const ChatPage = () => {
 
     return (
         <div className="row">   
+            <div className="container2" >
+                <div className="typed-out">Привет мир!</div>
+            </div>
+
             <div>
                 <form onSubmit={onMessageSubmit}>
                     <h1>Messanger</h1>
