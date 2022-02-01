@@ -5,8 +5,8 @@ import { AuthContext } from "../context/auth.context";
 import io from 'socket.io-client'
 import { TextField } from '@material-ui/core'
 
-// let socket = io.connect('http://our-family-gallery.ru')
-let socket = io.connect('http://localhost:5000')
+let socket = io.connect('http://our-family-gallery.ru')
+// let socket = io.connect('http://localhost:5000')
 
 const ChatPage = () => {
     const auth = useContext(AuthContext)
