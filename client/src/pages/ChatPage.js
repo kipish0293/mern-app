@@ -72,9 +72,6 @@ const ChatPage = () => {
 
     useEffect(()=> {
         socketRef.current = io('http://our-family-gallery.ru')
-        socketRef.current.on('userJoinToChat', ({name, message, date}) => {
-            setChat([...chat, ...[{name, message, date : date}]])
-        })
         socketRef.current.on("message", ({name, message, dateToIo})=> {
             setChat([...chat, ...[{name, message, date : dateToIo}]])
         })
@@ -84,6 +81,15 @@ const ChatPage = () => {
        
         return () => socketRef.current.disconnect()
     }, [chat])
+
+    useEffect(()=> {
+        if(socketRef.current) {
+            socketRef.current.on('userJoinToChat', ({name, message, date}) => {
+                setChat([...chat, ...[{name, message, date : date}]])
+            })
+        }
+    })
+    
 
     useEffect(()=> {
         if(userName) {
