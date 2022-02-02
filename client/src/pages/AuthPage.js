@@ -88,14 +88,14 @@ const AuthPage = () => {
                             >
                                 Войти
                             </button>
-                            <button 
+                            {/* <button 
                                 className="btn grey lighten-1 black-text"
                                 style={{marginRight : 10}}
                                 onClick={registerHandler}
                                 disabled={loading}
                             >
                                 Регистрация
-                            </button>
+                            </button> */}
 
                             {/* <button 
                                 className="btn grey lighten-1 black-text"
