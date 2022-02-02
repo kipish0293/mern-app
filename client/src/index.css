@@ -54,3 +54,26 @@ nav .sidenav-trigger {
     padding-top: 40px;
     padding-bottom: 20px;
 }
+
+.you {
+    max-width: 80%;
+    margin-left: auto;
+    padding : 10px;
+    background-color: #e5e4ff;
+    border-radius: 10px;
+    box-shadow: -4px 5px 2px 1px rgb(39 39 156 / 18%);
+}
+
+.not-you {
+    max-width: 80%;
+    margin-right: auto;
+    padding : 10px;
+    background-color: #ececec;
+    border-radius: 10px;
+    box-shadow: 4px 5px 2px 1px rgb(39 39 156 / 18%);
+}
+
+p, span {
+    line-height: 1.2em!important
+}
+

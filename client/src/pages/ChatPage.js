@@ -52,8 +52,9 @@ const ChatPage = () => {
 
     const renderChat = () => {
         return chat.map(({name, message, date}, index)=> (
-            <div style={{marginBottom : "10px"}} key={index}>
-                <p style={{padding : 0, margin : 0, lineHeight : "1em"}}>{name} : <span>{message}</span></p>
+
+            <div className={name == userName ? 'you' : 'not-you'} style={{marginBottom : "10px"}} key={index}>
+                <p style={{padding : 0, margin : 0 }}>{name} : <span>{message}</span></p>
                 <span style={{fontSize : "10px", color:"gray"}}>{`${new Date(date).toLocaleString()}`}</span>
             </div>
         ))
@@ -71,8 +72,8 @@ const ChatPage = () => {
     }
 
     useEffect(()=> {
-        socketRef.current = io.connect('http://our-family-gallery.ru')
-        // socketRef.current = io.connect('http://localhost:3000')
+        // socketRef.current = io.connect('http://our-family-gallery.ru')
+        socketRef.current = io.connect('http://localhost:3000')
 
         socketRef.current.on("message", ({name, message, dateToIo})=> {
             setChat([...chat, ...[{name, message, date : dateToIo}]])
@@ -112,7 +113,7 @@ const ChatPage = () => {
             <div className="container2"  >
                 <div className="typed-out">Добро пожаловать в чат!</div>
             </div>
-            <div ref={chatRef} style={{height : "400px", overflowY : "scroll"}}>
+            <div ref={chatRef} style={{height : "400px", width:"50%", overflowY : "scroll"}}>
                 {renderChat()}
             </div>
 
