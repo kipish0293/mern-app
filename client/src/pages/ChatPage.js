@@ -113,14 +113,14 @@ const ChatPage = () => {
             <div className="container2"  >
                 <div className="typed-out">Добро пожаловать в чат!</div>
             </div>
-            <div ref={chatRef} style={{height : "400px", width:"50%", overflowY : "scroll"}}>
+            <div ref={chatRef} style={{height : "250px", overflowY : "scroll"}}>
                 {renderChat()}
             </div>
 
             <div>
                 <form
                     onSubmit={onMessageSubmit}
-                    style={{marginBottom : "40px",}}
+                    style={{marginBottom : "40px"}}
                 >
                     <div>
                         <TextField
