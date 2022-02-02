@@ -2,22 +2,53 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHttp } from "../hooks/http.hook";
 import { useMessage } from "../hooks/message.hook";
 import { AuthContext } from "../context/auth.context";
+import { Button, makeStyles, TextField, withWidth } from '@material-ui/core'
 import io from 'socket.io-client'
-import { TextField } from '@material-ui/core'
 
-let socket = io.connect('http://our-family-gallery.ru')
-// let socket = io.connect('http://localhost:5000')
+// let socket = io.connect('http://our-family-gallery.ru')
+
+const useClasses = makeStyles((theme)=> ({
+    inputStyle : {
+        marginTop: "20px",
+        width : "50%",
+        
+        "& div" : {
+            padding : "10px",
+            "& input": {
+                padding : "4px 5px 5px!important",
+                fontSize : "16px!important",
+                color : "#333333!important",
+                [theme.breakpoints.between(theme.breakpoints.values.sm, theme.breakpoints.values.md)]: {
+                  fontSize : "16px!important",
+                  minWidth : "50px!important",
+                },
+                [theme.breakpoints.down(theme.breakpoints.values.sm)]: {
+                  fontSize : "14px!important",
+                },
+              },
+        }
+        
+    },
+    nameInstall : {
+        [theme.breakpoints.down(theme.breakpoints.values.sm)]: {
+          width : "100%"
+        },
+    },
+}))
 
 const ChatPage = () => {
+    const classes = useClasses()
     const auth = useContext(AuthContext)
     const userName = auth.userName;
     const chatRef = useRef()
+    const message = useMessage()
 
-    const {loading, error, request, clearError} = useHttp()
+    const {request} = useHttp()
 
     const [mess, setMess] = useState({message : '', name : userName })
     const [chat, setChat] = useState([])
-    const [sistemMes, setSistemMes] = useState({message : '', name : "system-bot"})
+    const socketRef = useRef()
+
 
     const renderChat = () => {
         return chat.map(({name, message, date}, index)=> (
@@ -35,78 +66,87 @@ const ChatPage = () => {
     const onMessageSubmit = (e) => {
         e.preventDefault()
         const {name, message} = mess
-        socket.emit('message', {name, message})
+        socketRef.current.emit("message", { name, message })
         setMess({message : "", name : userName})
     }
 
+    useEffect(()=> {
+        socketRef.current = io('http://our-family-gallery.ru')
+        socketRef.current.on('userJoinToChat', ({name, message, date}) => {
+            setChat([...chat, ...[{name, message, date : date}]])
+        })
+        socketRef.current.on("message", ({name, message, dateToIo})=> {
+            setChat([...chat, ...[{name, message, date : dateToIo}]])
+        })
+        setTimeout(()=> {
+            chatRef.current.scrollTo(0, 999999)
+        },500)
+       
+        return () => socketRef.current.disconnect()
+    }, [chat])
 
     useEffect(()=> {
         if(userName) {
-            socket.emit('userJoined', {userName})
+            message(`Пользователь ${userName} 
+                    присоединился к чату`)
+            socketRef.current.emit('userJoined', {userName})
         }
     }, [])
-
-    useEffect(()=> {
-        socket.on('message', ({name, message, dateToIo}) => {
-            setChat([{name, message, date : dateToIo}, ...chat])
-        })
-    })
-
-    useEffect(()=> {
-        socket.on('userJoinToChat', ({name, message, date}) => {
-            setChat([{name, message, date : date}, ...chat])
-        })
-    })
-
 
     useEffect(async ()=> {
         const data = await request('/api/auth/messager', 'GET')
         const newMessages = data.messages.reduce((sum, item)=>{
             sum.push({name : item.name, message : item.message, date : item.date})
             return sum;
-        },[]).reverse()
+        },[])
         setChat(newMessages)
+        setTimeout(()=> {
+            chatRef.current.scrollTo(0, 999999)
+        },500)
     },[])
 
     return (
         <div className="row">   
-            <div className="container2" >
-                <div className="typed-out">Привет мир!</div>
+            <div className="container2"  >
+                <div className="typed-out">Добро пожаловать в чат!</div>
+            </div>
+            <div ref={chatRef} style={{height : "400px", overflowY : "scroll"}}>
+                <h1>Chat Log</h1>
+                {renderChat()}
             </div>
 
             <div>
-                <form onSubmit={onMessageSubmit}>
-                    <h1>Messanger</h1>
-                    {/* <div>
-                        <TextField
-                            name="name"
-                            onChange={e => onTextChange(e)}
-                            value={mess.name}
-                            label="Name"
-                        />
-                    </div> */}
+                <form
+                    onSubmit={onMessageSubmit}
+                    style={{marginBottom : "40px",}}
+                >
                     <div>
                         <TextField
                             name="message"
+                            classes={{
+                                root : `${classes.inputStyle} ${classes.nameInstall}`
+                            }}
                             onChange={e => onTextChange(e)}
                             value={mess.message}
                             id="outlined-multiline-static"
                             variant="outlined"
                             label="Message"
                             disabled={!userName}
+                            autoComplete="off"
                         />
                     </div>
-                    <button>
-                        Send Message
-                    </button>
+                    <Button
+                        variant="outlined" 
+                        color="primary"
+                        type="submit"
+                    >
+                        Отправить
+                    </Button>
                 </form>
-                <div ref={chatRef} style={{height : "400px", overflowY : "scroll"}}>
-                    <h1>Chat Log</h1>
-                    {renderChat()}
-                </div>
+                
             </div>
         </div>
     )
 }
 
-export default ChatPage
+export default withWidth()(ChatPage)

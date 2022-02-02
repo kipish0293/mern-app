@@ -26,3 +26,32 @@
     from { border-color: transparent }
     to { border-color: orange; }
 }
+
+nav .sidenav-trigger {
+    float: right;
+}
+
+@media only screen and (max-width: 992px) {
+    nav .brand-logo {
+        left: auto;
+        margin: 0 18px;
+        transform: initial;
+    }
+}
+
+
+.containerTable {
+    margin : 0;
+    padding: 25px 50px;
+    display: flex; 
+    flex-direction: column;
+    height: 100%;
+    margin: 0 auto;
+    color: #333333;
+    overflow-x: scroll;
+}
+
+.container2 {
+    padding-top: 40px;
+    padding-bottom: 20px;
+}

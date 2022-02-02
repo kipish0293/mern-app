@@ -37,15 +37,6 @@ const AuthPage = () => {
         }
     }
 
-    // const getDataFromServer = async () => {
-    //     try {
-    //         const data = await request('/api/auth/get-data', 'GET')
-    //         message(data.message)
-    //     } catch(e) {
-            
-    //     }
-    // }
-
     useEffect(()=> {
         message(error)
         clearError()
@@ -57,9 +48,11 @@ const AuthPage = () => {
 
     return (
         <>
-            <div className="row">
-                <div className="col s6 offset-s3">
-                    <h1>Сократи ссылку</h1>
+            <div className="row" style={{marginTop : "10%"}}>
+                <div className="col s12 m6 offset-s0 offset-m3">
+                    <h2
+                        style={{textAlign : "center"}}
+                    >Family app</h2>
                     <div className="card blue darken-1">
                         <div className="card-content white-text">
                             <span className="card-title">Авторизация</span>

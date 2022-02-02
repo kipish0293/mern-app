@@ -23,25 +23,6 @@ app.use('/api/messager', require('./routes/auth.routes'))
 
 
 io.on('connection', (socket) => {
-    // console.log('Успешное соединение')
-    // socket.on('userJoinedToRoom', (data, cb)=> {
-    //     if(!data.name || data.room) {
-    //         return cb('Некорректные данные')
-    //     }
-
-    //     cb({ userId : socket.id})
-    // })
-    // socket.on('userJoined22',  (data, cb)=> {
-    //     if(!data.name) {
-    //         return cb('Данные некорректны')
-    //     }
-
-    //     socket.join(socket.id)
-    //     cb({userId : socket.id})
-
-    //     socket.broadcast.to(socket.id).emit('message', {name : "system-bot",message : `${userName} присоединился к беседе 22`, date : new Date()})
-    // })
-
     socket.on('userJoined', async ({userName})=> {
         io.emit('userJoinToChat', {name : "system-bot",message : `${userName} присоединился к беседе`, date : new Date()})
     })
@@ -55,7 +36,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', async (data)=> {
         console.log('Отключение')
     })
-    
 })
 
 

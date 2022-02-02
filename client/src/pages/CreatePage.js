@@ -33,6 +33,7 @@ const CreatePage = () => {
                     <input 
                         type="text" 
                         id="link" 
+                        autoComplete="off"
                         placeholder="Вставьте ссылку"
                         value={link}
                         onChange={e => setLink(e.target.value)}
