@@ -20,8 +20,6 @@ app.use('/api/link', require('./routes/link.routes'))
 app.use('/t', require('./routes/redirect.routes'))
 app.use('/api/messager', require('./routes/auth.routes'))
 
-
-
 io.on('connection', (socket) => {
     socket.on('userJoined', async ({userName})=> {
         io.emit('userJoinToChat', {name : "system-bot",message : `${userName} присоединился к беседе`, date : new Date()})
@@ -33,8 +31,8 @@ io.on('connection', (socket) => {
             io.emit('message', {name, message, dateToIo})
         })
     })
-    socket.on('disconnect', async (data)=> {
-        console.log('Отключение')
+    socket.on('disconnect', ()=> {
+        console.log(`Отключение ${socket.id}`)
     })
 })
 

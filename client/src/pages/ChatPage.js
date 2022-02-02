@@ -71,25 +71,21 @@ const ChatPage = () => {
     }
 
     useEffect(()=> {
-        socketRef.current = io('http://our-family-gallery.ru')
+        socketRef.current = io.connect('http://our-family-gallery.ru')
+        // socketRef.current = io.connect('http://localhost:3000')
+
         socketRef.current.on("message", ({name, message, dateToIo})=> {
             setChat([...chat, ...[{name, message, date : dateToIo}]])
+        })
+        socketRef.current.on('userJoinToChat', ({name, message, date}) => {
+            setChat([...chat, ...[{name, message, date : date}]])
         })
         setTimeout(()=> {
             chatRef.current.scrollTo(0, 999999)
         },500)
        
         return () => socketRef.current.disconnect()
-    }, [chat])
-
-    useEffect(()=> {
-        if(socketRef.current) {
-            socketRef.current.on('userJoinToChat', ({name, message, date}) => {
-                setChat([...chat, ...[{name, message, date : date}]])
-            })
-        }
-    })
-    
+    }, [chat])    
 
     useEffect(()=> {
         if(userName) {
@@ -117,7 +113,6 @@ const ChatPage = () => {
                 <div className="typed-out">Добро пожаловать в чат!</div>
             </div>
             <div ref={chatRef} style={{height : "400px", overflowY : "scroll"}}>
-                <h1>Chat Log</h1>
                 {renderChat()}
             </div>
 
