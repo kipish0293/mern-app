@@ -5,8 +5,8 @@ import DetailPage from "./pages/DetailPage"
 import ChatPage from "./pages/ChatPage"
 import CreatePage from "./pages/CreatePage"
 import AuthPage from "./pages/AuthPage"
-import VideoChatPage from "./pages/VideoChatPage"
-import VideoRoomPage from "./pages/VideoRoomPage"
+import Main from "./pages/Main"
+import Room from "./pages/Room"
 
 
 export const useRoutes = isAuthenticated => {
@@ -26,12 +26,8 @@ export const useRoutes = isAuthenticated => {
                 <Route path='/detail/:id'>
                     <DetailPage/>
                 </Route>
-                <Route path='/room' exact>
-                    <VideoChatPage/>
-                </Route>
-                <Route path='/room/:id' exact>
-                    <VideoRoomPage />
-                </Route>
+                <Route exact path='/room/:id' component={Room}/>
+                <Route exact path='/room' component={Main}/>
                 {/* <Redirect to="/links"/> */}
             </Switch>
         )

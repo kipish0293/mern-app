@@ -62,6 +62,7 @@ io.on('connection', socket => {
 
     //-----------------------video socket------------------
     socket.on(ACTIONS.JOIN, config => {
+        console.log('join')
         const {room: roomID} = config;
         const {rooms: joinedRooms} = socket;
     
@@ -89,6 +90,7 @@ io.on('connection', socket => {
     
     function leaveRoom() {
         const {rooms} = socket;
+        console.log(rooms, 'rooms')
     
         Array.from(rooms)
           // LEAVE ONLY CLIENT CREATED ROOM

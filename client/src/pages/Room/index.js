@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import useWebRTC, { LOCAL_VIDEO } from "../hooks/useWebRTC"
+import useWebRTC, { LOCAL_VIDEO } from "../../hooks/useWebRTC"
 
 
 function layout(clientsNumber = 1) {
@@ -45,18 +45,18 @@ export default function VideoRoomPage () {
             height: '100vh',
         }}>
             <div>test</div>
-        {clients.map((clientID, index) => {
+            {clients.map((clientID, index) => {
             return (
             <div key={clientID} style={videoLayout[index]} id={clientID}>
                 <video
-                width='100%'
-                height='100%'
-                ref={instance => {
-                    provideMediaRef(clientID, instance);
-                }}
-                autoPlay
-                playsInline
-                muted={clientID === LOCAL_VIDEO}
+                    width='100%'
+                    height='100%'
+                    ref={instance => {
+                        provideMediaRef(clientID, instance);
+                    }}
+                    autoPlay
+                    playsInline
+                    muted={clientID === LOCAL_VIDEO}
                 />
             </div>
             );
