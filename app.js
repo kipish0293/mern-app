@@ -46,19 +46,19 @@ function shareRoomsInfo() {
 
 io.on('connection', socket => {
     console.log('connected11111111')
-    socket.on('userJoined', async ({userName})=> {
-        io.emit('userJoinToChat', {name : "system-bot",message : `${userName} присоединился к беседе`, date : new Date()})
-    })
-    socket.on('message', async ({name, message, date})=> {
-        const mess = new Message({name: name, message : message, date : new Date()})
-        const dateToIo = `${mess.date}`
-        mess.save().then(()=> {
-            io.emit('message', {name, message, dateToIo})
-        })
-    })
-    socket.on('disconnect', ()=> {
-        console.log(`Отключение ${socket.id}`)
-    })
+    // socket.on('userJoined', async ({userName})=> {
+    //     io.emit('userJoinToChat', {name : "system-bot",message : `${userName} присоединился к беседе`, date : new Date()})
+    // })
+    // socket.on('message', async ({name, message, date})=> {
+    //     const mess = new Message({name: name, message : message, date : new Date()})
+    //     const dateToIo = `${mess.date}`
+    //     mess.save().then(()=> {
+    //         io.emit('message', {name, message, dateToIo})
+    //     })
+    // })
+    // socket.on('disconnect', ()=> {
+    //     console.log(`Отключение ${socket.id}`)
+    // })
 
     //-----------------------video socket------------------
     socket.on(ACTIONS.JOIN, config => {
