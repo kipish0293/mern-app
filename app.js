@@ -124,6 +124,7 @@ io.on('connection', socket => {
   socket.on(ACTIONS.JOIN, config => {
     const {room: roomID} = config;
     const {rooms: joinedRooms} = socket;
+    console.log(room, rooms, 'join')
 
     if (Array.from(joinedRooms).includes(roomID)) {
       return console.warn(`Already joined to ${roomID}`);
@@ -149,6 +150,7 @@ io.on('connection', socket => {
 
   function leaveRoom() {
     const {rooms} = socket;
+    console.log(rooms, 'rooms')
 
     Array.from(rooms)
       // LEAVE ONLY CLIENT CREATED ROOM
