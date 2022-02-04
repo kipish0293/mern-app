@@ -124,6 +124,11 @@ const Navbar = () => {
           </NavLink>
         </ListItem>
         <ListItem button className={classes.menuItem}>
+          <NavLink to="/room" className={`${classes.unselected}`}>
+            Видео чат
+          </NavLink>
+        </ListItem>
+        <ListItem button className={classes.menuItem}>
             <a href="/" onClick={logoutHandler}>Выйти</a>
         </ListItem>
       </List>
@@ -148,6 +153,7 @@ const Navbar = () => {
                 <li><NavLink to="/chat">Чат</NavLink></li>
                 <li><NavLink to="/create">Создать</NavLink></li>
                 <li><NavLink to="/links">Ссылки</NavLink></li>
+                <li><NavLink to="/room">Видео чат</NavLink></li>
                 <li><a href="/" onClick={logoutHandler}>Выйти</a></li>
             </ul>
             </div>
