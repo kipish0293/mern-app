@@ -8,6 +8,7 @@ const http = require('http')
 const Message = require('./models/Message')
 const ACTIONS = require('./client/src/socket/actions')
 const server = http.createServer(app)
+const cors = require('cors');
 const io = require('socket.io')(server, {
     cors: {
       origin: '*',
@@ -15,6 +16,13 @@ const io = require('socket.io')(server, {
 });
 const {version, validate} = require('uuid')
 
+// app.use(
+//     cors({
+//         credentials: true,
+//         origin: ["http://localhost:3000"],
+//         optionsSuccessStatus: 200
+//     })
+// )
 
 app.use(express.json({ extended : true }))
 app.use('/api/auth', require('./routes/auth.routes'))
@@ -24,19 +32,19 @@ app.use('/api/messager', require('./routes/auth.routes'))
 
 
 function getClientRooms() {
-    const {rooms} = io.socket.adapter;
-
-    return Array.from(rooms.keys()).filter(roomID => validate(roomID) && version(roomID) === 4)
-
+    const {rooms} = io.sockets.adapter;
+  
+    return Array.from(rooms.keys()).filter(roomID => validate(roomID) && version(roomID) === 4);
 }
 
 function shareRoomsInfo() {
     io.emit(ACTIONS.SHARE_ROOMS, {
-        rooms : getClientRooms()
+      rooms: getClientRooms()
     })
 }
+  
 
-io.on('connection', (socket) => {
+io.on('connection', socket => {
     console.log('connected11111111')
     socket.on('userJoined', async ({userName})=> {
         io.emit('userJoinToChat', {name : "system-bot",message : `${userName} присоединился к беседе`, date : new Date()})
@@ -54,54 +62,60 @@ io.on('connection', (socket) => {
 
     //-----------------------video socket------------------
     socket.on(ACTIONS.JOIN, config => {
-        const {room : roomID} = config;
-        const {rooms : joinedRooms} = socket;
-        
-        if(Array.from(joinedRooms).includes(roomID)) {
-           return console.warn(`Already joined to ${roomID}`) 
-        };
-
+        const {room: roomID} = config;
+        const {rooms: joinedRooms} = socket;
+    
+        if (Array.from(joinedRooms).includes(roomID)) {
+          return console.warn(`Already joined to ${roomID}`);
+        }
+    
         const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
-
+    
         clients.forEach(clientID => {
-            io.to(clientID).emit(ACTIONS.ADD_PEER, {
-                peerID : socket.id,
-                createOffer : false
-            });
-
-            socket.emit(ACTIONS.ADD_PEER, {
-                peerID : clientID,
-                createOffer : true,
-            })
-        })
-
-        socket.join(roomID)
-        shareRoomsInfo()
-    })
-
-    function leaveRoom () {
+          io.to(clientID).emit(ACTIONS.ADD_PEER, {
+            peerID: socket.id,
+            createOffer: false
+          });
+    
+          socket.emit(ACTIONS.ADD_PEER, {
+            peerID: clientID,
+            createOffer: true,
+          });
+        });
+    
+        socket.join(roomID);
+        shareRoomsInfo();
+    });
+    
+    function leaveRoom() {
         const {rooms} = socket;
-
-        Array.from(rooms).forEach(roomID=> {
+    
+        Array.from(rooms)
+          // LEAVE ONLY CLIENT CREATED ROOM
+          .filter(roomID => validate(roomID) && version(roomID) === 4)
+          .forEach(roomID => {
+    
             const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
-
-            clients.forEach(clientID => {
-                io.to(clientID).emit(ACTIONS.REMOVE_PEER, {
-                    peerId : socket.id
-                })
-
-                socket.emit(ACTIONS.REMOVE_PEER, {
-                    peerId : clientID,
-                })
-            })
-
-            socket.leave(roomID)
-        })
-        shareRoomsInfo()
+    
+            clients
+              .forEach(clientID => {
+              io.to(clientID).emit(ACTIONS.REMOVE_PEER, {
+                peerID: socket.id,
+              });
+    
+              socket.emit(ACTIONS.REMOVE_PEER, {
+                peerID: clientID,
+              });
+            });
+    
+            socket.leave(roomID);
+          });
+    
+        shareRoomsInfo();
     }
-
+    
     socket.on(ACTIONS.LEAVE, leaveRoom);
-    socket.on("disconnecting", leaveRoom);
+    socket.on('disconnecting', leaveRoom);
 })
 
 

@@ -1,15 +1,12 @@
-import io from 'socket.io-client'
+import {io} from 'socket.io-client';
 
 const options = {
-    "force new connection" : true,
-    reconnetionAttempts : "Infinity",
-    timeout : 10000,
-    transports : ["websocket"]
+  "force new connection": true,
+  reconnectionAttempts: "Infinity", // avoid having user reconnect manually in order to prevent dead clients after a server restart
+  timeout : 10000, // before connect_error and connect_timeout are emitted.
+  transports : ["websocket"]
 }
 
-// const socket = io.connect('http://localhost:3000', options)
-const socket = io.connect('http://our-family-gallery.ru', options)
-
-
+const socket = io('/', options);
 
 export default socket;

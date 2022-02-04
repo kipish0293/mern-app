@@ -46,50 +46,38 @@ const useClasses = makeStyles((theme)=> ({
 
 const VideoChatPage = (props) => {
     const classes = useClasses()
-    const history = useHistory()
-    const [rooms, setRooms] = useState([])
-    const rootNode = useRef()
+    const history = useHistory();
+    const [rooms, updateRooms] = useState([]);
+    const rootNode = useRef();
 
-    useEffect(()=> {
-      socket.on(ACTIONS.SHARE_ROOMS, ({rooms = []} = {}) => {
-          if(rootNode.current) {
-              setRooms(rooms);
-          }
-      })  
-    }, [])
-
-
-    useEffect(()=> {
-        console.log(rooms)
-    }, [rooms])
-
+    useEffect(() => {
+        socket.on(ACTIONS.SHARE_ROOMS, ({rooms = []} = {}) => {
+        if (rootNode.current) {
+            updateRooms(rooms);
+        }
+        });
+    }, []);
 
     return (
-        <div ref={rootNode} className="row">   
-            <h1>Available Rooms</h1>
-            <ul>
-                {rooms.map(roomID => (
-                    <li key={roomID}>
-                        {roomID}
-                        <button
-                            onClick={()=> {
-                                history.push(`/room/${roomID}`)
-                            }}
-                        >
-                            JOIN ROOM
-                        </button>
-                    </li>
-                ))}
-            </ul>
-            <button
-                onClick={()=> {
-                    history.push(`/room/${v4()}`)
-                }}
-            >
-                CREATE NEW ROOM
-            </button>           
+        <div ref={rootNode}>
+        <h1>Available Rooms</h1>
+
+        <ul>
+            {rooms.map(roomID => (
+            <li key={roomID}>
+                {roomID}
+                <button onClick={() => {
+                history.push(`/room/${roomID}`);
+                }}>JOIN ROOM</button>
+            </li>
+            ))}
+        </ul>
+
+        <button onClick={() => {
+            history.push(`/room/${v4()}`);
+        }}>Create New Room</button>
         </div>
-    )
+    );
 }
 
 export default withWidth()(VideoChatPage)
