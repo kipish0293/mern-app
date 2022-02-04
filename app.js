@@ -148,13 +148,14 @@ start()
 
 // const path = require('path');
 // const express = require('express');
+// const config = require('config')
 // const app = express();
 // const server = require('http').createServer(app);
 // const io = require('socket.io')(server);
 // const {version, validate} = require('uuid');
 
-// const ACTIONS = require('./src/socket/actions');
-// const PORT = process.env.PORT || 3001;
+// const ACTIONS = require('./client/src/socket/actions');
+// const PORT = config.get('port') || 5000
 
 // function getClientRooms() {
 //   const {rooms} = io.sockets.adapter;
@@ -169,6 +170,7 @@ start()
 // }
 
 // io.on('connection', socket => {
+//     console.log('connect -123')
 //   shareRoomsInfo();
 
 //   socket.on(ACTIONS.JOIN, config => {

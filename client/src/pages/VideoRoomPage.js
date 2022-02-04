@@ -44,6 +44,7 @@ export default function VideoRoomPage () {
             flexWrap: 'wrap',
             height: '100vh',
         }}>
+            <div>test</div>
         {clients.map((clientID, index) => {
             return (
             <div key={clientID} style={videoLayout[index]} id={clientID}>

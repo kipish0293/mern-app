@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Button, makeStyles, TextField, withWidth } from '@material-ui/core'
-import socket from '../socket/index';
+import socket from "../socket";
 import ACTIONS from "../socket/actions";
 import { useHistory } from "react-router-dom";
 import {v4} from 'uuid'
