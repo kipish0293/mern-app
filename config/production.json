@@ -2,5 +2,5 @@
     "port" : 5000,
     "mongoUri" : "mongodb+srv://osoko007:12PahaN12@cluster0.dwu7v.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     "jwtSecret" : "pavel martynov mern",
-    "baseUrl" : "http://localhost:5000"
+    "baseUrl" : "https://localhost:5000"
 }

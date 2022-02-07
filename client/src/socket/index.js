@@ -7,6 +7,6 @@ const options = {
   transports : ["websocket"]
 }
 
-const socket = io('/', options);
+const socket = io('/room', options);
 
 export default socket;

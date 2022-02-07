@@ -4,10 +4,20 @@ const app = express()
 const config = require('config')
 const path = require('path')
 const mongoose = require('mongoose')
-const http = require('http')
+// const http = require('http')
+const https = require('https')
 const Message = require('./models/Message')
 const ACTIONS = require('./client/src/socket/actions')
-const server = http.createServer(app)
+const fs = require('fs')
+// const httpProxy = require('http-proxy')
+const server = https.createServer(
+    {
+        key : fs.readFileSync('./cert/key.pem', 'utf-8'),
+        cert : fs.readFileSync('./cert/cert.pem', 'utf-8'),   
+    },
+    app
+)
+
 const cors = require('cors');
 const io = require('socket.io')(server, {
     cors: {
@@ -197,7 +207,10 @@ io.on('connection', socket => {
 
 if(process.env.NODE_ENV === 'production') {
     
-    app.use('/', express.static(path.join(__dirname, 'client', 'build')))
+    // app.use('/', express.static(path.join(__dirname, 'client', 'build')))
+    app.use('/', (req, res, next)=> {
+        res.send('hello')
+    })
 
     app.get('*', (req,res)=> {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
@@ -205,6 +218,7 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 const PORT = config.get('port') || 5000
+
 
 async function start() {
     try {
