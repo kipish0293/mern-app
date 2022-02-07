@@ -9,14 +9,14 @@ const https = require('https')
 const Message = require('./models/Message')
 const ACTIONS = require('./client/src/socket/actions')
 const fs = require('fs')
-// const httpProxy = require('http-proxy')
-const server = https.createServer(
-    {
-        key : fs.readFileSync('./cert/key.pem', 'utf-8'),
-        cert : fs.readFileSync('./cert/cert.pem', 'utf-8'),   
-    },
-    app
-)
+const server = require('http').createServer(app);
+// const server = https.createServer(
+//     {
+//         key : fs.readFileSync('./cert/key.pem', 'utf-8'),
+//         cert : fs.readFileSync('./cert/cert.pem', 'utf-8'),   
+//     },
+//     app
+// )
 
 const cors = require('cors');
 const io = require('socket.io')(server, {
