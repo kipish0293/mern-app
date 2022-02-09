@@ -72,8 +72,8 @@ const ChatPage = () => {
     }
 
     useEffect(()=> {
-        // socketRef.current = io.connect('http://our-family-gallery.ru')
-        socketRef.current = io.connect('http://localhost:3000')
+        socketRef.current = io.connect('http://our-family-gallery.ru')
+        // socketRef.current = io.connect('http://localhost:3000')
 
         socketRef.current.on("message", ({name, message, dateToIo})=> {
             setChat([...chat, ...[{name, message, date : dateToIo}]])

@@ -12,3 +12,7 @@
 гит репозиторий https://github.com/kipish0293/mern-app
 
 видео Владилена на ютуб https://www.youtube.com/watch?v=ivDjWYcKDZI&t=6362s
+
+
+
+ключевое слово к SSH ключу root
