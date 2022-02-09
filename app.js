@@ -50,7 +50,6 @@ app.use('/api/link', require('./routes/link.routes'))
 app.use('/t', require('./routes/redirect.routes'))
 app.use('/api/messager', require('./routes/auth.routes'))
 app.use('/api/images', require('./routes/upload.routes'))
-app.use('/images', express.static(path.join(__dirname, 'imagex')))
 
 
 
@@ -178,6 +177,9 @@ if(process.env.NODE_ENV === 'production') {
     app.get('*', (req,res)=> {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
     })  
+
+    app.use('/images', express.static(path.join(__dirname, 'imagex')))
+
 }
 
 const PORT = config.get('port') || 5000
