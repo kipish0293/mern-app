@@ -79,3 +79,17 @@ p, span {
     line-height: 1.2em!important
 }
 
+div p {
+    background-image: url('../581(1).jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    /* background-attachment: fixed; */
+    -webkit-background-clip: text;
+    /* color: transparent; */
+    line-height: 12px!important;
+}
+
+.div {
+    background-color: black;
+}

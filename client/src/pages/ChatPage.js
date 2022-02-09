@@ -38,82 +38,82 @@ const useClasses = makeStyles((theme)=> ({
 
 const ChatPage = () => {
     const classes = useClasses()
-    // const auth = useContext(AuthContext)
-    // const userName = auth.userName;
-    // const chatRef = useRef()
-    // const message = useMessage()
+    const auth = useContext(AuthContext)
+    const userName = auth.userName;
+    const chatRef = useRef()
+    const message = useMessage()
 
-    // const {request} = useHttp()
+    const {request} = useHttp()
 
-    // const [mess, setMess] = useState({message : '', name : userName })
-    // const [chat, setChat] = useState([])
-    // const socketRef = useRef()
+    const [mess, setMess] = useState({message : '', name : userName })
+    const [chat, setChat] = useState([])
+    const socketRef = useRef()
 
 
-    // const renderChat = () => {
-    //     return chat.map(({name, message, date}, index)=> (
+    const renderChat = () => {
+        return chat.map(({name, message, date}, index)=> (
 
-    //         <div className={name == userName ? 'you' : 'not-you'} style={{marginBottom : "10px"}} key={index}>
-    //             <p style={{padding : 0, margin : 0 }}>{name} : <span>{message}</span></p>
-    //             <span style={{fontSize : "10px", color:"gray"}}>{`${new Date(date).toLocaleString()}`}</span>
-    //         </div>
-    //     ))
-    // }
+            <div className={name == userName ? 'you' : 'not-you'} style={{marginBottom : "10px"}} key={index}>
+                <p style={{padding : 0, margin : 0 }}>{name} : <span>{message}</span></p>
+                <span style={{fontSize : "10px", color:"gray"}}>{`${new Date(date).toLocaleString()}`}</span>
+            </div>
+        ))
+    }
 
-    // const onTextChange = (e) => {
-    //     setMess({...mess, [e.target.name] : e.target.value})
-    // }
+    const onTextChange = (e) => {
+        setMess({...mess, [e.target.name] : e.target.value})
+    }
 
-    // const onMessageSubmit = (e) => {
-    //     e.preventDefault()
-    //     const {name, message} = mess
-    //     socketRef.current.emit("message", { name, message })
-    //     setMess({message : "", name : userName})
-    // }
+    const onMessageSubmit = (e) => {
+        e.preventDefault()
+        const {name, message} = mess
+        socketRef.current.emit("message", { name, message })
+        setMess({message : "", name : userName})
+    }
 
-    // useEffect(()=> {
-    //     socketRef.current = io.connect('http://our-family-gallery.ru')
-    //     // socketRef.current = io.connect('http://localhost:3000')
+    useEffect(()=> {
+        // socketRef.current = io.connect('http://our-family-gallery.ru')
+        socketRef.current = io.connect('http://localhost:3000')
 
-    //     socketRef.current.on("message", ({name, message, dateToIo})=> {
-    //         setChat([...chat, ...[{name, message, date : dateToIo}]])
-    //     })
-    //     socketRef.current.on('userJoinToChat', ({name, message, date}) => {
-    //         setChat([...chat, ...[{name, message, date : date}]])
-    //     })
-    //     setTimeout(()=> {
-    //         chatRef.current.scrollTo(0, 999999)
-    //     },500)
+        socketRef.current.on("message", ({name, message, dateToIo})=> {
+            setChat([...chat, ...[{name, message, date : dateToIo}]])
+        })
+        socketRef.current.on('userJoinToChat', ({name, message, date}) => {
+            setChat([...chat, ...[{name, message, date : date}]])
+        })
+        setTimeout(()=> {
+            chatRef.current.scrollTo(0, 999999)
+        },500)
        
-    //     return () => socketRef.current.disconnect()
-    // }, [chat])    
+        return () => socketRef.current.disconnect()
+    }, [chat])    
 
-    // useEffect(()=> {
-    //     if(userName) {
-    //         message(`Пользователь ${userName} 
-    //                 присоединился к чату`)
-    //         socketRef.current.emit('userJoined', {userName})
-    //     }
-    // }, [])
+    useEffect(()=> {
+        if(userName) {
+            message(`Пользователь ${userName} 
+                    присоединился к чату`)
+            socketRef.current.emit('userJoined', {userName})
+        }
+    }, [])
 
-    // useEffect(async ()=> {
-    //     const data = await request('/api/auth/messager', 'GET')
-    //     const newMessages = data.messages.reduce((sum, item)=>{
-    //         sum.push({name : item.name, message : item.message, date : item.date})
-    //         return sum;
-    //     },[])
-    //     setChat(newMessages)
-    //     setTimeout(()=> {
-    //         chatRef.current.scrollTo(0, 999999)
-    //     },500)
-    // },[])
+    useEffect(async ()=> {
+        const data = await request('/api/auth/messager', 'GET')
+        const newMessages = data.messages.reduce((sum, item)=>{
+            sum.push({name : item.name, message : item.message, date : item.date})
+            return sum;
+        },[])
+        setChat(newMessages)
+        setTimeout(()=> {
+            chatRef.current.scrollTo(0, 999999)
+        },500)
+    },[])
 
     return (
         <div className="row">   
             <div className="container2"  >
                 <div className="typed-out">Добро пожаловать в чат!</div>
             </div>
-            {/* <div ref={chatRef} style={{height : "250px", overflowY : "scroll"}}>
+            <div ref={chatRef} style={{height : "250px", overflowY : "scroll"}}>
                 {renderChat()}
             </div>
 
@@ -146,7 +146,7 @@ const ChatPage = () => {
                     </Button>
                 </form>
                 
-            </div> */}
+            </div>
         </div>
     )
 }
