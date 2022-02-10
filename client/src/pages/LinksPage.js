@@ -19,8 +19,9 @@ const LinksPage = () => {
 
             axios.post('/api/images/upload', data, {
                 headers : {
-                    'content-type' : 'multipart/form-data'
-                }
+                    'content-type' : 'multipart/form-data',
+                    "Authorisation" : `Bearer ${token}`
+                },
             })
                 .then(res => setAvatar(res.data.path))
         } catch (error) {
@@ -38,6 +39,18 @@ const LinksPage = () => {
 
         }
     }, [token, request])
+
+    const getPhoto = useCallback( async ()=> {
+        try {
+            const fetched = await request('/api/images/get-images', 'GET', null, {
+                Authorisation : `Bearer ${token}`
+            })
+            console.log(fetched, "fethced")
+            
+        } catch (error) {
+            console.error(error, 'что то пошло не так')
+        }
+    },[token,request])
 
     useEffect(() => {
         fetchLinks()
@@ -58,6 +71,11 @@ const LinksPage = () => {
             <div>
                 <input type="file" onChange={e => setImg(e.target.files[0])} />
                 <button onClick={sendFile}>Отправить на сервер</button>
+            </div>
+            <div>
+                <button onClick={getPhoto}>
+                    Получить все фотографии
+                </button>
             </div>
            
             <div className="div">
